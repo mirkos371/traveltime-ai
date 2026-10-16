@@ -12,6 +12,8 @@ Prečítaj:
 
 Source private commit SHA určuje presný autoritatívny stav, z ktorého bol tento mirror odvodený.
 
+**Dôležité:** Git commit SHA verejného mirroru a source private commit SHA sú dve rôzne identity. Pri otázke na pôvod snapshotu používaj výhradne hodnotu označenú `PRIVATE_SOURCE_COMMIT` v `SOURCE_PRIVATE_COMMIT.md`. Nikdy ju neodvodzuj z Git metadát verejného repozitára.
+
 ## 2. Povinné čítanie
 
 Potom prečítaj v tomto poradí:
@@ -30,3 +32,5 @@ Pri konkrétnom `BLIND_ANALYSIS` sa neskôr pridá aj neutrálne RFC zadanie a p
 * **Zhoda AI nie je dôkaz:** rozhodujú merateľné experimenty na reálnych dátach.
 * **Pri BLIND_ANALYSIS používaj iba spoločný vstup:** nepokúšaj sa rekonštruovať private-only kontext z iných zdrojov.
 * **Mirror sa neupravuje ako produkčný projekt:** návrhy patria do analýzy; schválené zmeny sa integrujú v private repozitári a až potom sa publikuje nový mirror snapshot.
+* **Aktuálny pracovný krok sa vždy berie zo `STAV_PROJEKTU_AI.md`:** všeobecné pravidlá v `MODEL_SPOLUPRACE_AI.md` (napríklad kedy použiť `BLIND_ANALYSIS`) nesmú byť zamieňané za aktuálny pracovný krok.
+* **Ak sa otázka pýta na „jeden aktuálny ďalší krok“, odpovedaj podľa sekcie „Jeden aktuálny pracovný krok“ v `STAV_PROJEKTU_AI.md`.**
