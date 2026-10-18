@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "source": "public-approved-mirror",
+  "context": {
+    "target": "GOOGLE_DOC_ID",
+    "files": [
+      "SOURCE_PRIVATE_COMMIT.md",
+      "AI_START.md",
+      "PRAVIDLA_PROJEKTU_AI.md",
+      "STAV_PROJEKTU_AI.md",
+      "MODEL_SPOLUPRACE_AI.md",
+      "README.md"
+    ]
+  },
+  "workspace": {
+    "enabled": false,
+    "files": []
+  }
+}
