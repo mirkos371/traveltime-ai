@@ -1,13 +1,26 @@
 #!/usr/bin/env python3
 """Publish approved public AI mirror files into one existing Google Doc."""
 import os
+import json
 import re
 from pathlib import Path
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
-FILES = ["SOURCE_PRIVATE_COMMIT.md", "AI_START.md", "PRAVIDLA_PROJEKTU_AI.md", "STAV_PROJEKTU_AI.md", "MODEL_SPOLUPRACE_AI.md", "README.md"]
 root = Path(__file__).resolve().parents[1]
+manifest = json.loads((root / "ai-export-manifest.json").read_text(encoding="utf-8"))
+if manifest.get("schema_version") != 1 or manifest.get("context", {}).get("target") != "GOOGLE_DOC_ID":
+    raise SystemExit("Unsupported export manifest")
+FILES = manifest["context"]["files"]
+if not FILES or len(FILES) != len(set(FILES)) or "SOURCE_PRIVATE_COMMIT.md" not in FILES:
+    raise SystemExit("Invalid context allowlist")
+for name in FILES:
+    path = Path(name)
+    resolved = (root / path).resolve()
+    if path.is_absolute() or ".." in path.parts or not resolved.is_relative_to(root.resolve()) or not resolved.is_file():
+        raise SystemExit("Unsafe or missing export file: " + name)
+if manifest.get("workspace", {}).get("enabled"):
+    raise SystemExit("Workspace sync not implemented; refusing partial export")
 sections = []
 for name in FILES:
     content = (root / name).read_text(encoding="utf-8")
@@ -22,7 +35,7 @@ text = ("TravelTime – AI CONTEXT SNAPSHOT\n"
         + "\n\n".join(sections) + "\n")
 doc_id = os.environ["GOOGLE_DOC_ID"]
 credentials = service_account.Credentials.from_service_account_info(
-    __import__("json").loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]),
+    json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]),
     scopes=["https://www.googleapis.com/auth/documents"],
 )
 service = build("docs", "v1", credentials=credentials, cache_discovery=False)
