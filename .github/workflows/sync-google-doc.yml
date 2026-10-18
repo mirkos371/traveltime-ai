@@ -4,13 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - README.md
-      - AI_START.md
-      - SOURCE_PRIVATE_COMMIT.md
-      - PRAVIDLA_PROJEKTU_AI.md
-      - STAV_PROJEKTU_AI.md
-      - MODEL_SPOLUPRACE_AI.md
-      - tools/sync_google_doc.py
+      - '**/*.md'
+      - '**/*.py'
+      - ai-export-manifest.json
       - .github/workflows/sync-google-doc.yml
 permissions:
   contents: read
