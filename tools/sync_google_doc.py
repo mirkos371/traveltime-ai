@@ -4,7 +4,7 @@ import os
 import json
 import re
 from pathlib import Path
-from google.oauth2 import service_account
+import google.auth
 from googleapiclient.discovery import build
 
 root = Path(__file__).resolve().parents[1]
@@ -34,10 +34,7 @@ text = ("TravelTime – AI CONTEXT SNAPSHOT\n"
         "Private source commit (pozri SOURCE_PRIVATE_COMMIT.md): " + sha_matches[0] + "\n\n"
         + "\n\n".join(sections) + "\n")
 doc_id = os.environ["GOOGLE_DOC_ID"]
-credentials = service_account.Credentials.from_service_account_info(
-    json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]),
-    scopes=["https://www.googleapis.com/auth/documents"],
-)
+credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/documents"])
 service = build("docs", "v1", credentials=credentials, cache_discovery=False)
 doc = service.documents().get(documentId=doc_id).execute()
 body = doc.get("body", {}).get("content", [])
